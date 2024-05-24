@@ -1,10 +1,11 @@
-import { nanoid } from "nanoid";
 import LinkModel from "../../models/links/link.model";
+const xid = require('xid-js');
 
 const createLinkService = async (originalURL: string) => {
+    
     const keyLength: number = 8;
     let checkForDuplicatedKeys: Boolean = true;
-    let newKey: string = nanoid(keyLength);
+    let newKey: string = xid.next();
 
     while(checkForDuplicatedKeys) {
         let linkFoundWithKey;
@@ -17,7 +18,7 @@ const createLinkService = async (originalURL: string) => {
         if (!linkFoundWithKey) {
             checkForDuplicatedKeys = false;
         } else {
-            newKey = nanoid(keyLength);
+            newKey = xid.next();
         }
         
         try {
