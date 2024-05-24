@@ -3,7 +3,7 @@ import createLinkService from "../../services/links/createLink.service";
 
 const createLink = async(req: Request, res: Response, next: NextFunction) => {
     const originalURL: string = req.body.original_url;
-    const baseUrl: string = 'http://localhost:3000';
+    const baseUrl: string = 'http://localhost:3000/';
 
     try {
         new URL(originalURL);
