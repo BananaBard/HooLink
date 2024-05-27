@@ -3,7 +3,6 @@ import redirectLinkService from "../../services/links/redirectLink.service";
 
 const redirectLink = async(req: Request, res: Response, next: NextFunction) => {
     const id: string = req.params.id
-
     if(!id) {
         const error = new Error('Missing ID');
         return next(error);
@@ -16,10 +15,10 @@ const redirectLink = async(req: Request, res: Response, next: NextFunction) => {
         res.status(404).send()
     }
 
-    if(!link) {
+    if(!link?.original_url) {
         res.status(404).send();
     } else {
-        res.status(301).redirect(link.original_link);
+        res.status(301).redirect(link.original_url);
     }
 }
 

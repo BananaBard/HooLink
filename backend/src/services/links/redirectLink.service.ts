@@ -1,28 +1,38 @@
-import { Document } from "mongoose";
-import LinkModel from "../../models/links/link.model";
+import { supabase } from "../../infra/supabase";
+import { Link } from "../../types";
 
-type Link = {
-    link_key: string,
-    original_link: string,
-    createdAt: Date
-}
-
-interface LinkDocument extends Document, Link {}
+const base_url = process.env.DEV_URL;
 
 const redirectLinkService = async (id: string): Promise<Link> => {
-    try {
-        const link = await LinkModel.findOne({link_key: id}) as LinkDocument
-        
-        if(!link) {
-            throw new Error('Link not found.');
-        }
+  const fullUrl = `${base_url}${id}`;
+  try {
+    const res = await supabase
+      .from("links")
+      .select()
+      .eq("shortened_url", fullUrl)
+      .single();
 
-        return link.toJSON() as Link;
-
-    } catch(err) {
-        throw err
+    if (res.status !== 200) {
+      throw new Error(String(res.error));
     }
-}
 
-export default redirectLinkService
-export {Link}
+    let expDate = new Date(res.data.expiresAt);
+    let now = new Date();
+    let linkId = res.data.id;
+
+    if (now > expDate) {
+      let deleteRes = await supabase.from("links").delete().eq("id", linkId);
+
+      if (deleteRes.status === 204) {
+        throw new Error("The link expired");
+      }
+    }
+
+    return res.data as Link;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export default redirectLinkService;
+export { Link };
