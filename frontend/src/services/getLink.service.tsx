@@ -8,7 +8,8 @@ export const callCreateLink = async (url: string) :Promise<Link> => {
             "content-type": 'application/json'
         },
         body: JSON.stringify({
-            original_url: url
+            original_url: url,
+            expiresAt: 30
         })
     })
 
