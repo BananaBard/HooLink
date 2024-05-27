@@ -16,6 +16,13 @@ const redirectLinkService = async (id: string): Promise<Link> => {
       throw new Error(String(res.error));
     }
 
+    try {
+        await supabase.from("links").update({clicked: (res.data.clicked + 1)}).eq("shortened_url", fullUrl)
+    } catch(error) {
+        throw new Error('Can not update');
+    }
+
+
     let expDate = new Date(res.data.expiresAt);
     let now = new Date();
     let linkId = res.data.id;
