@@ -3,7 +3,7 @@ import createLinkService from "../../services/links/createLink.service";
 
 const createLink = async(req: Request, res: Response, next: NextFunction) => {
     const originalURL: string = req.body.original_url;
-    const baseUrl: string = 'http://localhost:3000/';
+    const expiresAt: number = req.body.expiresAt;
 
     try {
         new URL(originalURL);
@@ -14,13 +14,10 @@ const createLink = async(req: Request, res: Response, next: NextFunction) => {
     }
 
     try {
-        const newLink = await createLinkService(originalURL);
-        const linkObj = newLink?.toJSON();
+        const newLink = await createLinkService(originalURL, expiresAt);
+        const linkObj = newLink;
 
-        res.status(200).json({
-            shortened_url: `${baseUrl}${linkObj?.link_key}`,
-            original_url: linkObj?.original_link
-        });
+        res.status(200).json(linkObj);
     } catch(error) {
         next(error);
     }
