@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { type Link } from "../types";
 import { Button } from "./ui/Button";
 import { callCreateLink } from "../services/getLink.service";
 import { useMutation } from "@tanstack/react-query";
