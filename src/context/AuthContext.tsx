@@ -38,9 +38,9 @@ function AuthProvider({ children }: PropsWithChildren) {
     try {
       await supabase.auth.signInWithOAuth({
         provider: "github",
-        options: {
-          redirectTo: 'https://hoolink.vercel.app/dashboard'
-        }
+/*         options: {
+          redirectTo: 'http://localhost:5173/dashboard'
+        } */
       });
     } catch (error) {
       console.error("Error signing in:");
@@ -51,7 +51,7 @@ function AuthProvider({ children }: PropsWithChildren) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: 'https://hoolink.vercel.app/dashboard'
+        redirectTo: 'http://localhost:5173/dashboard' //'https://hoolink.vercel.app/dashboard'
       }
     });
     if (error) {
@@ -61,6 +61,7 @@ function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log({session})
       setUser(session?.user || null);
       setToken(session?.access_token || null);
     });
