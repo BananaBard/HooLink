@@ -37,7 +37,10 @@ function AuthProvider({ children }: PropsWithChildren) {
   const signInWithGithub = async () => {
     try {
       await supabase.auth.signInWithOAuth({
-        provider: "github"
+        provider: "github",
+        options: {
+          redirectTo: 'https://hoolink.vercel.app/dashboard'
+        }
       });
     } catch (error) {
       console.error("Error signing in:");
