@@ -40,3 +40,4 @@ const redirectLinkService = async (id: string): Promise<Link> => {
     throw err;
   }
 };
+export default redirectLinkService
