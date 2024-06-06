@@ -47,9 +47,6 @@ function AuthProvider({ children }: PropsWithChildren) {
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
-      options: {
-        redirectTo: "http://localhost:5173/dashboard",
-      },
     });
     if (error) {
       console.error("Error signing in:", error.message);
