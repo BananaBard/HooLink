@@ -1,9 +1,10 @@
-import { LoginBtn } from "../../types";
+import { HTMLAttributes } from "react";
 
-function GithubLoginBtn({onClickFn} : LoginBtn) {
+interface LoginBtnProps extends HTMLAttributes<HTMLButtonElement> {}
+function GithubLoginBtn(props: LoginBtnProps) {
   return (
     <button
-      onClick={() => onClickFn('github')}
+      {...props}
       type="button"
       className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 me-2 mb-2"
     >
@@ -25,4 +26,4 @@ function GithubLoginBtn({onClickFn} : LoginBtn) {
   );
 }
 
-export default GithubLoginBtn
+export default GithubLoginBtn;
