@@ -27,7 +27,6 @@ export const CreateLinkModal: React.FC<LinkModal> = ({isCTA}): JSX.Element => {
       toast.error('Empty or invalid URL.');
       return
     }
-    console.log(originalURL, user)
     createLink({ url: originalURL, expiresAt: 1440, id: user?.id! });
   };
 
