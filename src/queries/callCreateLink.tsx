@@ -12,8 +12,7 @@ const callCreateLink = async ({url, expiresAt, id}:CreateLinkProps) :Promise<Lin
     try {
         const res = await createLinkService({originalURL: url, expTimeInMinutes: expiresAt, creator: id})
         console.log({res})
-/*         const linkData: Link = await res.json()
-        toast.success('Link created!') */
+        toast.success('Link created!')
         return res
 
     } catch(error) {
