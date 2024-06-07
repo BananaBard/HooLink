@@ -1,17 +1,17 @@
 import { toast } from "sonner";
-import { type Link } from "../types";
+import { type Link, type CreateLink } from "../types";
 import createLinkService from "../infra/services/createLink.service";
 
-interface CreateLinkProps {
-    url: string,
-    expiresAt: number,
-    id: string
-}
 
-const callCreateLink = async ({url, expiresAt, id}:CreateLinkProps) :Promise<Link> => {
+const callCreateLink = async ({originalURL, expTimeInMinutes, creator, description}:CreateLink) :Promise<Link> => {
     try {
-        const res = await createLinkService({originalURL: url, expTimeInMinutes: expiresAt, creator: id})
-        console.log({res})
+        new URL(originalURL)
+    } catch(error) {
+        toast.error('Use a valid URL.');
+        throw new Error('Invalid URL.')
+    }
+    try {
+        const res = await createLinkService({originalURL, expTimeInMinutes, creator, description})
         toast.success('Link created!')
         return res
 
