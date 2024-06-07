@@ -5,7 +5,7 @@ import callCreateLink from "../queries/callCreateLink";
 import { Button } from "./buttons/Button";
 import { useAuth } from "../context/AuthContext";
 import { queryKeys } from "../utils/queryKeys.utils";
-import Loader from "./utils/Loader";
+//import Loader from "./utils/Loader";
 import { toast } from "sonner";
 import Dialog from "./modals/Dialog";
 
