@@ -23,7 +23,7 @@ function Dashboard() {
   const { data: userLinks } = useLinks(user?.id!);
 
   return (
-    <div className="flex flex-col flex-grow p-12 lg:px-14 lg:py-12 gap-8 bg-neutral-900 text-neutral-200">
+    <div className="flex flex-col flex-grow p-12 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
       <section className="flex mx-auto justify-between max-w-7xl w-full">
         <input
           type="search"
@@ -34,15 +34,15 @@ function Dashboard() {
             <Tooltip message="Your stored links, max of 20.">
               <StackIcon />
             </Tooltip>
-            <p className="text-md tracking-wide">
-              {userLinks && `${userLinks.length || "0"}/20`}
+            <p className="text-md">
+              {userLinks && `${userLinks.length || "0"} / 20`}
             </p>
           </div>
           <CreateLinkModal isCTA={false} />
         </div>
       </section>
       {userLinks?.length! > 0 ? (
-        <ul className="lg:mx-auto grid max-w-4 lg:max-w-7xl lg:grid-cols-3 gap-8">
+        <ul className="lg:mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 lg:w-full lg:max-w-7xl">
           {userLinks?.map((link: Link) => (
             <LinkCard key={link.shortened_url} link={link} />
           ))}
