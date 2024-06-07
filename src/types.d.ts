@@ -8,6 +8,7 @@ export interface Link {
   expiresAt: Date;
   creator?: string;
   clicks: number;
+  description: string;
 }
 
 export interface UserData {
@@ -20,4 +21,12 @@ export interface UserData {
 
 export interface LinkUtilBtn {
   onClickFn: () => void;
+}
+
+export interface CreateLink {
+  originalURL: string;
+  expTimeInMinutes: number;
+  description?: string;
+  tags?: Array<string>;
+  creator: string;
 }
