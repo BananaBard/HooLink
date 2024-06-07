@@ -10,5 +10,6 @@ export const Button = ({className, ...rest}: Props) => {
     text-white
     focus-visible:ring-2 
     disabled:bg-slate-500 disabled:text-gray-300 disabled:cursor-not-allowed disabled:shadow-none
+    disabled:scale-100
     `, className)}{...rest}/>
 }
