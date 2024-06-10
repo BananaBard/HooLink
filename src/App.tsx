@@ -9,9 +9,10 @@ import RedirectPage from "./pages/Redirect";
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path={Pages.link} element={<RedirectPage />}></Route>
+    <Routes>
+      <Route path={Pages.link} element={<RedirectPage />}></Route>
+      
+      <Route element={<Layout/>}>
         <Route path={Pages.home} element={<LandingPage />} />
         <Route path={Pages.login} element={<Login />} />
         <Route
@@ -22,8 +23,8 @@ function App() {
             </PrivateRoute>
           }
         />
-      </Routes>
-    </Layout>
+      </Route>
+    </Routes>
   );
 }
 
