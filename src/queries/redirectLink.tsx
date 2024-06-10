@@ -1,6 +1,6 @@
 import { supabase } from "../infra/supabase";
 
-const base_url = 'http://localhost:5173/'/* import.meta.env.VITE_BASE_URL */;
+const base_url = import.meta.env.VITE_BASE_URL;
 
 const redirectLinkService = async (id: string): Promise<void> => {
   const fullUrl = `${base_url}${id}`;
@@ -35,7 +35,7 @@ const redirectLinkService = async (id: string): Promise<void> => {
     } catch (error) {
       throw new Error("Can not update");
     }
-    window.location.replace(res.data.original_url)
+    window.location.replace(res.data.original_url);
   } catch (err) {
     throw err;
   }
