@@ -91,6 +91,7 @@ function LinkCard({ link }: Props) {
       <div className="flex gap-4 my-2">
         {link.tags &&
           link.tags.map((tag) => {
+            if (tag == "") return;
             return (
               <span className="p-2 bg-neutral-300 text-md rounded-lg text-black font-medium">
                 {tag}
