@@ -8,7 +8,8 @@ export interface Link {
   expiresAt: Date;
   creator?: string;
   clicks: number;
-  description: string;
+  description?: string;
+  tags?: Array<string>;
 }
 
 export interface UserData {

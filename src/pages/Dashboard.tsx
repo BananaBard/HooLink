@@ -5,7 +5,7 @@ import getUserLinks from "../queries/getUserLinks";
 import { queryKeys } from "../utils/queryKeys.utils";
 import StackIcon from "../components/icons/Stack.icon";
 import Tooltip from "../components/utils/Tooltip";
-import { CreateLinkModal } from "../components/CreateLinkModal";
+import { CreateLinkModal } from "../components/modals/CreateLinkModal";
 import { Link } from "../types";
 
 const MINUTE_IN_MS = 60 * 1000;

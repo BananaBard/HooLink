@@ -3,7 +3,7 @@ import { type Link, type CreateLink } from "../types";
 import createLinkService from "../infra/services/createLink.service";
 
 
-const callCreateLink = async ({originalURL, expTimeInMinutes, creator, description}:CreateLink) :Promise<Link> => {
+const callCreateLink = async ({originalURL, expTimeInMinutes, creator, description, tags}:CreateLink) :Promise<Link> => {
     try {
         new URL(originalURL)
     } catch(error) {
@@ -11,7 +11,7 @@ const callCreateLink = async ({originalURL, expTimeInMinutes, creator, descripti
         throw new Error('Invalid URL.')
     }
     try {
-        const res = await createLinkService({originalURL, expTimeInMinutes, creator, description})
+        const res = await createLinkService({originalURL, expTimeInMinutes, creator, description, tags})
         toast.success('Link created!')
         return res
 

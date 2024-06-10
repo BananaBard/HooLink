@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CreateLink } from "../../types";
 const base_url: string = import.meta.env.VITE_BASE_URL
 
-const createLinkService = async({originalURL, expTimeInMinutes, creator, description}: CreateLink) => {
+const createLinkService = async({originalURL, expTimeInMinutes, creator, description, tags}: CreateLink) => {
     let newKey: string = uuidv4().slice(-5)
 
     const existShortURL = await supabase
@@ -20,7 +20,8 @@ const createLinkService = async({originalURL, expTimeInMinutes, creator, descrip
       shortened_url: base_url + newKey,
       expiresAt: new Date(now.getTime() + expTimeInMinutes * 60 * 60 * 1000),
       description: description,
-      creator: creator
+      creator: creator,
+      tags: tags
     });
     if (res.status === 201) {
       const newLink = await supabase

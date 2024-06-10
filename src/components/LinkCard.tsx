@@ -42,7 +42,10 @@ function LinkCard({ link }: Props) {
   const hideModal = () => {
     deleteModalRef.current?.close();
   };
-  console.log(link)
+
+  console.log(link);
+
+  const tags = ["React Router Dom", "React Query", "Quiero trabajo"];
 
   return (
     <li
@@ -88,7 +91,17 @@ function LinkCard({ link }: Props) {
           {link.original_url}
         </a>
       </div>
-      <p>{link.description ? link.description : 'No description'}</p>
+      <p>{link.description ? link.description : "No description"}</p>
+      <div className="flex gap-4 my-2">
+        {link.tags &&
+          link.tags.map((tag) => {
+            return (
+              <span className="p-2 bg-neutral-300 text-md rounded-lg text-black font-medium">
+                {tag}
+              </span>
+            );
+          })}
+      </div>
     </li>
   );
 }
