@@ -43,10 +43,6 @@ function LinkCard({ link }: Props) {
     deleteModalRef.current?.close();
   };
 
-  console.log(link);
-
-  const tags = ["React Router Dom", "React Query", "Quiero trabajo"];
-
   return (
     <li
       className="flex flex-col bg-neutral-800 rounded-md border border-neutral-400 py-4 px-8 gap-2"
