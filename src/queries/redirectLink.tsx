@@ -1,9 +1,8 @@
 import { supabase } from "../infra/supabase";
-import { Link } from "../types";
 
-const base_url = process.env.DEV_URL;
+const base_url = 'http://localhost:5173/'/* import.meta.env.VITE_BASE_URL */;
 
-const redirectLinkService = async (id: string): Promise<Link> => {
+const redirectLinkService = async (id: string): Promise<void> => {
   const fullUrl = `${base_url}${id}`;
   try {
     const res = await supabase
@@ -15,13 +14,6 @@ const redirectLinkService = async (id: string): Promise<Link> => {
     if (res.status !== 200) {
       throw new Error(String(res.error));
     }
-
-    try {
-        await supabase.from("links").update({clicked: (res.data.clicked + 1)}).eq("shortened_url", fullUrl)
-    } catch(error) {
-        throw new Error('Can not update');
-    }
-
 
     let expDate = new Date(res.data.expiresAt);
     let now = new Date();
@@ -35,9 +27,17 @@ const redirectLinkService = async (id: string): Promise<Link> => {
       }
     }
 
-    return res.data as Link;
+    try {
+      await supabase
+        .from("links")
+        .update({ clicked: res.data.clicked + 1 })
+        .eq("shortened_url", fullUrl);
+    } catch (error) {
+      throw new Error("Can not update");
+    }
+    window.location.replace(res.data.original_url)
   } catch (err) {
     throw err;
   }
 };
-export default redirectLinkService
+export default redirectLinkService;
