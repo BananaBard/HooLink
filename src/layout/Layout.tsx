@@ -1,16 +1,12 @@
-import { ReactNode } from "react"
 import Header from "../components/ui/Header"
 import Footer from "../components/ui/Footer"
+import { Outlet } from "react-router-dom"
 
-interface LayoutProps {
-    children: ReactNode
-}
-
-export default function Layout({children}: LayoutProps) {
+export default function Layout() {
     return (
         <main className='flex flex-col justify-between min-h-screen'>
             <Header/>
-                {children}
+                <Outlet/>
             <Footer/>
         </main>
     )
