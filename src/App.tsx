@@ -5,16 +5,28 @@ import Login from "./pages/Login";
 import Layout from "./layout/Layout";
 import PrivateRoute from "./components/PrivateRoute";
 import Pages from "./utils/pages.utils";
+import RedirectPage from "./pages/Redirect";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <Layout>
-      <Routes>
+    <Routes>
+      <Route path={Pages.link} element={<RedirectPage />}></Route>
+      <Route path={Pages.notFound} element={<NotFound/>}></Route>
+      
+      <Route element={<Layout/>}>
         <Route path={Pages.home} element={<LandingPage />} />
         <Route path={Pages.login} element={<Login />} />
-        <Route path={Pages.dashboard} element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-      </Routes>
-    </Layout>
+        <Route
+          path={Pages.dashboard}
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 
