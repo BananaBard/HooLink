@@ -35,7 +35,7 @@ const redirectLinkService = async (id: string): Promise<void> => {
     } catch (error) {
       throw new Error("Can not update");
     }
-    window.location.replace(res.data.original_url);
+    window.location.replace(res.data.original_url)
   } catch (err) {
     throw err;
   }
