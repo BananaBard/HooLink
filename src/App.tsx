@@ -6,11 +6,13 @@ import Layout from "./layout/Layout";
 import PrivateRoute from "./components/PrivateRoute";
 import Pages from "./utils/pages.utils";
 import RedirectPage from "./pages/Redirect";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <Routes>
       <Route path={Pages.link} element={<RedirectPage />}></Route>
+      <Route path={Pages.notFound} element={<NotFound/>}></Route>
       
       <Route element={<Layout/>}>
         <Route path={Pages.home} element={<LandingPage />} />
