@@ -7,6 +7,7 @@ import StackIcon from "../components/icons/Stack.icon";
 import Tooltip from "../components/utils/Tooltip";
 import { CreateLinkModal } from "../components/modals/CreateLinkModal";
 import { Link } from "../types";
+import SearchInput from "../components/SearchInput";
 
 const MINUTE_IN_MS = 60 * 1000;
 
@@ -23,13 +24,10 @@ function Dashboard() {
   const { data: userLinks } = useLinks(user?.id!);
 
   return (
-    <div className="flex flex-col flex-grow p-12 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
-      <section className="flex mx-auto justify-between max-w-7xl w-full">
-        <input
-          type="search"
-          className="bg-neutral-800 border border-neutral-400 rounded-lg min-w-56"
-        />
-        <div className="flex gap-2">
+    <div className="flex flex-col flex-grow p-4 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
+      <section className="flex flex-col lg:flex-row mx-auto justify-between gap-4 max-w-7xl w-full">
+       <SearchInput/>
+        <div className="flex gap-2 justify-between">
           <div className="flex gap-2 items-center bg-neutral-800 border border-neutral-400 w-fit p-2 rounded-lg">
             <Tooltip message="Your stored links, max of 20.">
               <StackIcon />

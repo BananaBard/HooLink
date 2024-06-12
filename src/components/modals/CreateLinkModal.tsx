@@ -107,20 +107,20 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
           {/* {isPending && <Loader/>} */}
 
           <fieldset className="flex flex-col gap-2">
-            <label htmlFor="url" className="text-neutral-400">
+            <label htmlFor="url" className="text-neutral-300 font-medium">
               URL
             </label>
             <input
               id="url"
               type="text"
-              className="py-3 px-2 bg-neutral-800 border border-neutral-400  rounded-lg min-w-[300px] text-white"
+              className="py-3 px-2 bg-neutral-800 border border-neutral-400 rounded-lg text-white"
               placeholder="https://hoolink.vercel.app"
               value={originalURL}
               onChange={(e) => setOriginalURL(e.target.value)}
             />
           </fieldset>
           <fieldset className="flex flex-col gap-2">
-            <label htmlFor="description" className="text-neutral-400">
+            <label htmlFor="description" className="text-neutral-300 font-medium">
               Description
             </label>
             <textarea
@@ -129,23 +129,23 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
               id="description"
               maxLength={140}
               placeholder="This link was shortened to save space when referencing it in my personal blog!"
-              className="py-3 px-2 bg-neutral-800 border border-neutral-400  rounded-lg min-w-[300px] text-white"
+              className="py-3 px-2 bg-neutral-800 border border-neutral-400  rounded-lg text-white"
             ></textarea>
           </fieldset>
           <fieldset className="flex flex-col gap-2">
-            <label htmlFor="tags" className="text-neutral-400">
+            <label htmlFor="tags" className="text-neutral-300 font-medium">
               Tags
             </label>
             <input
               id="tags"
               multiple
               type="text"
-              className="py-3 px-2 bg-neutral-800 border border-neutral-400  rounded-lg min-w-[300px] text-white"
+              className="py-3 px-2 bg-neutral-800 border border-neutral-400  rounded-lg text-white"
               value={tags}
-              placeholder="Tags, work like, this!"
+              placeholder="Tags, work, like this!"
               onChange={(e) => setTags(e.target.value)}
             />
-            <span className="text-sm text-neutral-400">
+            <span className="text-sm text-neutral-300">
               Tags must be separated by comma "," and the maximum amount is 3
               per link.
             </span>
