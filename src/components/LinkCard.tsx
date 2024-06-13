@@ -42,7 +42,6 @@ function LinkCard({ link }: Props) {
   const hideModal = () => {
     deleteModalRef.current?.close();
   };
-
   return (
     <li
       className="flex flex-col bg-neutral-800 rounded-md border border-neutral-400 py-4 px-8 gap-2"
@@ -66,6 +65,7 @@ function LinkCard({ link }: Props) {
         </a>
 
         <div className="flex gap-2">
+          <p>{link.clicked}</p>
           <Tooltip message="Copy shortened link!">
             <CopyIconBtn onClickFn={handleCopyLink} />
           </Tooltip>
