@@ -25,7 +25,7 @@ function Dashboard() {
 
   return (
     <div className="flex flex-col flex-grow p-4 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
-      <section className="flex flex-col lg:flex-row mx-auto justify-between gap-4 max-w-7xl w-full">
+      <section className="flex flex-col lg:flex-row lg:items-center mx-auto justify-between gap-4 max-w-7xl w-full">
        <SearchInput/>
         <div className="flex gap-2 justify-between">
           <div className="flex gap-2 items-center bg-neutral-800 border border-neutral-400 w-fit p-2 rounded-lg">
