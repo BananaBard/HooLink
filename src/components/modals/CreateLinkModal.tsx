@@ -77,7 +77,7 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
       tagsArr = []
       return false;
     }
-    tagsArr = cleanedTags
+    tagsArr = cleanedTags.sort()
     return true;
   };
 
