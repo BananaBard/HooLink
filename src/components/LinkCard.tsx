@@ -93,7 +93,7 @@ function LinkCard({ link }: Props) {
           link.tags.map((tag) => {
             if (tag == "") return;
             return (
-              <span className="p-2 bg-neutral-300 text-md rounded-lg text-black font-medium">
+              <span key={tag} className="p-2 bg-neutral-300 text-md rounded-lg text-black font-medium">
                 {tag}
               </span>
             );

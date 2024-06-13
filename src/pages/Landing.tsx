@@ -17,13 +17,15 @@ function LandingPage() {
     <div
       className="w-full 
     text-white flex-grow
-    bg-neutral-900"
+    bg-neutral-900
+    px-4
+    "
     >
-      <section className="max-w-7xl mx-auto flex flex-col items-center py-44 gap-4">
-        <h1 className="text-7xl font-bold text-center">
+      <section className="max-w-7xl mx-auto flex flex-col md:items-center py-20 lg:py-44 gap-4 md:gap-8">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-left md:text-center">
           Your <strong className="text-purple-500">Solution</strong> for Shortening Links
         </h1>
-        <h3 className="text-[18px] text-center font-medium text-neutral-400 max-w-screen-md">
+        <h3 className="text-base text-left md:text-2xl md:text-center font-medium text-neutral-400 max-w-screen-md">
           HooLink not only provides a quick and easy solution but also ensures a
           secure and efficient experience for all your links.
         </h3>
@@ -31,9 +33,6 @@ function LandingPage() {
           user ? <Button onClick={handleDashboard} className="mt-2">Dashboard</Button> : <Button onClick={handleTryItBtn} className="mt-2">Try it now</Button>
         }
       </section>
-      {/* <section className="max-w-7xl mx-auto">
-        <h3 className="text-2xl text-white">Features</h3>
-      </section> */}
     </div>
   );
 }
