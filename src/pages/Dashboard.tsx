@@ -7,7 +7,12 @@ import StackIcon from "../components/icons/Stack.icon";
 import Tooltip from "../components/utils/Tooltip";
 import { CreateLinkModal } from "../components/modals/CreateLinkModal";
 import { Link } from "../types";
-import SearchInput from "../components/SearchInput";
+import IconButton from "../components/buttons/iconButtons/IconButton";
+import SortAscLettersIcon from "../components/icons/SortAscLetter";
+import SortDesLetterIcon from "../components/icons/SortDesLetter";
+import SortRecentIcon from "../components/icons/SortRecentIcon";
+import SortOlderIcon from "../components/icons/SortOlderIcon";
+
 
 const MINUTE_IN_MS = 60 * 1000;
 
@@ -26,7 +31,12 @@ function Dashboard() {
   return (
     <div className="flex flex-col flex-grow p-4 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
       <section className="flex flex-col lg:flex-row lg:items-center mx-auto justify-between gap-4 max-w-7xl w-full">
-       <SearchInput/>
+        <div className="flex gap-2">
+          <IconButton icon={<SortAscLettersIcon/>}>Letter Ascending</IconButton>
+          <IconButton icon={<SortDesLetterIcon/>}>Letter Descending</IconButton>
+          <IconButton icon={<SortRecentIcon/>}>Recent</IconButton>
+          <IconButton icon={<SortOlderIcon/>}>Older</IconButton>
+        </div>
         <div className="flex gap-2 justify-between">
           <div className="flex gap-2 items-center bg-neutral-800 border border-neutral-400 w-fit p-2 rounded-lg">
             <Tooltip message="Your stored links, max of 20.">
