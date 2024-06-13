@@ -7,7 +7,7 @@ export interface Link {
   createdAt: Date;
   expiresAt: Date;
   creator?: string;
-  clicks: number;
+  clicked: number;
   description?: string;
   tags?: Array<string>;
 }
