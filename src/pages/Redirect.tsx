@@ -13,8 +13,8 @@ export default function RedirectPage() {
     onError: () => {
       navigate(Pages.notFound);
     },
-  });
-
+    });
+    
   useEffect(() => {
     redirectLink(id!);
   }, []);

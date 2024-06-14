@@ -4,9 +4,11 @@ import GoogleLoginBtn from "../components/buttons/GoogleLoginBtn";
 import GithubLoginBtn from "../components/buttons/GithubLoginBtn";
 import "../index.css";
 import Pages from "../utils/pages.utils";
+import useTitle from "../hooks/useTitle";
 
 export default function Login() {
   const { signInWithGithub, user } = useAuth();
+  useTitle('Login - HooLink')
 
   const handleGithubLogin = async () => {
     console.log(signInWithGithub);

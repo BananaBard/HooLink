@@ -12,6 +12,7 @@ import SortAscLettersIcon from "../components/icons/SortAscLetter";
 import SortDesLetterIcon from "../components/icons/SortDesLetter";
 import SortRecentIcon from "../components/icons/SortRecentIcon";
 import SortOlderIcon from "../components/icons/SortOlderIcon";
+import useTitle from "../hooks/useTitle";
 
 
 const MINUTE_IN_MS = 60 * 1000;
@@ -27,6 +28,8 @@ function useLinks(id: string) {
 function Dashboard() {
   const { user } = useAuth();
   const { data: userLinks } = useLinks(user?.id!);
+
+  useTitle('Dashboard - HooLink')
 
   return (
     <div className="flex flex-col flex-grow p-4 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
