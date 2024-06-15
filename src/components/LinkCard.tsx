@@ -30,7 +30,10 @@ function LinkCard({ link }: Props) {
   const handleDeleteLink = async () => {
     const res = await deleteLinkService({ userId: user?.id!, linkId: link.id });
     if (res) {
-      toast.success("Deleted");
+      toast.success("Deleted", {
+        description: 'You will be able to see this link until you refresh the page',
+        duration: 5000
+      });
       deleteModalRef?.current!.close();
       queryClient.invalidateQueries({ queryKey: queryKeys.links.userLinks });
     }
@@ -43,7 +46,6 @@ function LinkCard({ link }: Props) {
   const hideModal = () => {
     deleteModalRef.current?.close();
   };
-  console.log(typeof link.createdAt);
   return (
     <li
       className="flex flex-col bg-neutral-800 rounded-md border border-neutral-400 py-4 px-8 gap-2"
