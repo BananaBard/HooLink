@@ -4,10 +4,10 @@ export interface Link {
   id: string;
   original_url: string;
   shortened_url?: string;
-  createdAt: Date;
-  expiresAt: Date;
+  createdAt: string;
+  expiresAt: string;
   creator?: string;
-  clicks: number;
+  clicked: number;
   description?: string;
   tags?: Array<string>;
 }

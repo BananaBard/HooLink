@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/buttons/Button";
 import Pages from "../utils/pages.utils";
+import useTitle from "../hooks/useTitle";
 
 export default function NotFound() {
+  useTitle('Link not found - HooLink')
   const navigate = useNavigate();
   return (
     <main className="flex justify-center items-center bg-neutral-800 min-h-screen">

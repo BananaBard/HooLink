@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/buttons/Button";
 import { useAuth } from "../context/AuthContext";
+import useTitle from "../hooks/useTitle";
 
 function LandingPage() {
   const {user} = useAuth();
   const navigate = useNavigate();
+  useTitle('HooLink')
   const handleTryItBtn = () => {
     navigate("/login");
   };

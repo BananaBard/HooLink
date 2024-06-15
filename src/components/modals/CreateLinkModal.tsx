@@ -5,16 +5,24 @@ import callCreateLink from "../../queries/callCreateLink";
 import { Button } from "../buttons/Button";
 import { useAuth } from "../../context/AuthContext";
 import { queryKeys } from "../../utils/queryKeys.utils";
-//import Loader from "./utils/Loader";
 import { toast } from "sonner";
 import Dialog from "./Dialog";
+import { Link } from "../../types";
 
 interface LinkModal {
-  isCTA: Boolean;
+  isCTA: boolean;
+  shouldSort: boolean;
+  sortMethod: string;
+  isAscending: boolean;
+  userLinks?: Link[]
 }
 
 export const CreateLinkModal: React.FC<LinkModal> = ({
   isCTA,
+  shouldSort,
+  sortMethod,
+  isAscending,
+  userLinks
 }): JSX.Element => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [originalURL, setOriginalURL] = useState("");
@@ -22,23 +30,40 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
   const [tags, setTags] = useState("");
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  let tagsArr: Array<string>
+  let tagsArr: Array<string>;
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
     event
   ) => {
     event.preventDefault();
     if (originalURL === "") {
-      toast.warning("Empty or invalid URL.");
+      toast.warning("Empty or invalid URL.", {
+        duration: 5000
+      });
       return;
     }
     if (description.length > 140) {
-      toast.warning("Description to long, should be less than 140 characters.");
+      toast.warning("Description to long", {
+        description: 'Your description should be less than 140 characters.',
+        duration: 5000
+      });
       return;
     }
 
     if (checkValidTags() === false) {
-      toast.warning("Tags should be 3 or less.");
+      toast.warning("To many tags", {
+        description: 'Tags should be 3 or less.',
+        duration: 5000
+      }
+      );
+      return;
+    }
+
+    if (checkLinksLimit() === false) {
+      toast.error('Can not create link', {
+        duration: 5000,
+        description: 'You reached your links limit, delete one or more to keep using HooLink'
+      });
       return;
     }
 
@@ -47,7 +72,7 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
       expTimeInMinutes: 1440,
       description,
       creator: user?.id!,
-      tags: tagsArr
+      tags: tagsArr,
     });
   };
 
@@ -57,7 +82,15 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
       dialogRef.current!.close();
       setOriginalURL("");
       setDescription("");
-      queryClient.invalidateQueries({ queryKey: queryKeys.links.userLinks });
+      setTags("");
+      queryClient.invalidateQueries({
+        queryKey: [
+          queryKeys.links.userLinks,
+          shouldSort,
+          sortMethod,
+          isAscending,
+        ],
+      });
     },
   });
 
@@ -74,12 +107,19 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
       return tag.trim();
     });
     if (cleanedTags.length > 3) {
-      tagsArr = []
+      tagsArr = [];
       return false;
     }
-    tagsArr = cleanedTags
+    tagsArr = cleanedTags.sort();
     return true;
   };
+
+  const checkLinksLimit = (): boolean => {
+    if (userLinks) {
+      return userLinks.length < 20
+    }
+    else return true
+  }
 
   const ctaStyle: string = `bg-purple-600 py-3 px-2 rounded-md w-[128px] font-medium
     hover:transition-all hover:scale-105
@@ -104,8 +144,6 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
           onSubmit={handleSubmit}
           className="flex flex-col gap-4"
         >
-          {/* {isPending && <Loader/>} */}
-
           <fieldset className="flex flex-col gap-2">
             <label htmlFor="url" className="text-neutral-300 font-medium">
               URL
@@ -120,7 +158,10 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
             />
           </fieldset>
           <fieldset className="flex flex-col gap-2">
-            <label htmlFor="description" className="text-neutral-300 font-medium">
+            <label
+              htmlFor="description"
+              className="text-neutral-300 font-medium"
+            >
               Description
             </label>
             <textarea

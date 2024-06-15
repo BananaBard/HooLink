@@ -15,7 +15,7 @@ function App() {
       <Route path={Pages.notFound} element={<NotFound/>}></Route>
       
       <Route element={<Layout/>}>
-        <Route path={Pages.home} element={<LandingPage />} />
+        <Route path={Pages.home}  element={<LandingPage />} />
         <Route path={Pages.login} element={<Login />} />
         <Route
           path={Pages.dashboard}

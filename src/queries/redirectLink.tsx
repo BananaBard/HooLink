@@ -27,17 +27,20 @@ const redirectLinkService = async (id: string): Promise<void> => {
       }
     }
 
-    try {
-      await supabase
-        .from("links")
-        .update({ clicked: res.data.clicked + 1 })
-        .eq("shortened_url", fullUrl);
-    } catch (error) {
-      throw new Error("Can not update");
-    }
+    await incrementClickCount(linkId)
     window.location.replace(res.data.original_url)
   } catch (err) {
     throw err;
   }
 };
+
+async function incrementClickCount(linkId: string) {
+  const { error } = await supabase.rpc("increment_click_count", {
+    link_id: linkId,
+  });
+  if (error) {
+    console.error("Error incrementing click count:", error);
+  }
+}
+
 export default redirectLinkService;

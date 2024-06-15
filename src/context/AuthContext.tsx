@@ -38,30 +38,23 @@ function AuthProvider({ children }: PropsWithChildren) {
     try {
       await supabase.auth.signInWithOAuth({
         provider: "github",
-/*         options: {
-          redirectTo: 'http://localhost:5173/dashboard'
-        } */
       });
     } catch (error) {
-      console.error("Error signing in:");
+      throw new Error('Error login')
     }
   };
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
-      options: {
-        redirectTo: 'http://localhost:5173/dashboard' //'https://hoolink.vercel.app/dashboard'
-      }
     });
     if (error) {
-      console.error("Error signing in:", error.message);
+      throw new Error('Error login')
     }
   };
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log({session})
       setUser(session?.user || null);
       setToken(session?.access_token || null);
     });

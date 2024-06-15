@@ -1,5 +1,6 @@
 import { Link } from "../types";
 import ToolIconBtn from "./buttons/iconButtons/ToolIconBtn";
+import ClickCountIcon from "./icons/ClickCountIcon";
 import DeleteIconBtn from "./buttons/iconButtons/DeleteIconBtn";
 import CopyIconBtn from "./buttons/iconButtons/CopyIconBtn";
 import Tooltip from "./utils/Tooltip";
@@ -29,7 +30,10 @@ function LinkCard({ link }: Props) {
   const handleDeleteLink = async () => {
     const res = await deleteLinkService({ userId: user?.id!, linkId: link.id });
     if (res) {
-      toast.success("Deleted");
+      toast.success("Deleted", {
+        description: 'You will be able to see this link until you refresh the page',
+        duration: 5000
+      });
       deleteModalRef?.current!.close();
       queryClient.invalidateQueries({ queryKey: queryKeys.links.userLinks });
     }
@@ -42,7 +46,6 @@ function LinkCard({ link }: Props) {
   const hideModal = () => {
     deleteModalRef.current?.close();
   };
-
   return (
     <li
       className="flex flex-col bg-neutral-800 rounded-md border border-neutral-400 py-4 px-8 gap-2"
@@ -55,7 +58,7 @@ function LinkCard({ link }: Props) {
         />
       </Dialog>
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between md:items-center">
         <a
           href={link.shortened_url}
           target="_blank"
@@ -65,7 +68,13 @@ function LinkCard({ link }: Props) {
           / <strong>{`${link.shortened_url?.slice(-5)}`}</strong>
         </a>
 
-        <div className="flex gap-2">
+        <section className="flex gap-2 mt-2 sm:mt-0">
+          <Tooltip message="Click count">
+            <div className="flex gap-2 items-center mr-2">
+              <ClickCountIcon />
+              <p>{link.clicked}</p>
+            </div>
+          </Tooltip>
           <Tooltip message="Copy shortened link!">
             <CopyIconBtn onClickFn={handleCopyLink} />
           </Tooltip>
@@ -75,29 +84,44 @@ function LinkCard({ link }: Props) {
           <Tooltip message="Delete link!">
             <DeleteIconBtn onClickFn={showModal} />
           </Tooltip>
-        </div>
+        </section>
       </div>
-      <div>
-        <a
-          className="text-neutral-300 text-ellipsis max-w-[50ch] whitespace-nowrap overflow-hidden block text-sm"
-          referrerPolicy="no-referrer"
-          target="_blank"
-          href={link.original_url}
-        >
-          {link.original_url}
-        </a>
-      </div>
+      <a
+        className="text-neutral-300 text-ellipsis max-w-[50ch] whitespace-nowrap overflow-hidden block text-sm"
+        referrerPolicy="no-referrer"
+        target="_blank"
+        href={link.original_url}
+      >
+        {link.original_url}
+      </a>
       <p>{link.description ? link.description : "No description"}</p>
       <div className="flex gap-4 my-2">
         {link.tags &&
           link.tags.map((tag) => {
             if (tag == "") return;
             return (
-              <span key={tag} className="p-2 bg-neutral-300 text-md rounded-lg text-black font-medium">
+              <p
+                key={tag}
+                className="p-2 bg-neutral-300 text-md rounded-lg text-black font-medium"
+              >
                 {tag}
-              </span>
+              </p>
             );
           })}
+      </div>
+      <div className="flex justify-between gap-2">
+        <p className="text-neutral-400">
+          Created at:{" "}
+          <strong className="text-neutral-300">
+            {link.createdAt.slice(0, 10)}
+          </strong>
+        </p>
+        <p className="text-neutral-400">
+          Expires at:{" "}
+          <strong className="text-neutral-300">
+            {link.expiresAt.slice(0, 10)}
+          </strong>
+        </p>
       </div>
     </li>
   );
