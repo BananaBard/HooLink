@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <Toaster duration={2000} position="top-right" richColors={true} />
+          <Toaster duration={2000} position="top-right" richColors={true} expand={true} />
           <App />
           <ReactQueryDevtools />
         </AuthProvider>
