@@ -11,19 +11,19 @@ const checkDescription = (description: string, maxLength: number) => {
   return true;
 };
 
-const checkValidTags = (tags: string, tagsArr: string[]): boolean => {
+const checkValidTags = (tags: string, tagsArray: string[]): boolean => {
   const cleanedTags = tags.split(",").map((tag) => {
     return tag.trim();
   });
   if (cleanedTags.length > 3) {
-    tagsArr = [];
+    tagsArray = [];
     toast.warning("To many tags", {
       description: "Tags should be 3 or less.",
       duration: 5000,
     });
     return false;
   }
-  tagsArr = cleanedTags.sort();
+  tagsArray = cleanedTags.sort();
   return true;
 };
 
