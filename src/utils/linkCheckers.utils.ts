@@ -16,14 +16,14 @@ const checkValidTags = (tags: string, tagsArray: string[]): boolean => {
     return tag.trim();
   });
   if (cleanedTags.length > 3) {
-    tagsArray = [];
+    tagsArray.splice(0, tagsArray.length);
     toast.warning("To many tags", {
       description: "Tags should be 3 or less.",
       duration: 5000,
     });
     return false;
   }
-  tagsArray = cleanedTags.sort();
+  tagsArray.splice(0, tagsArray.length, ...cleanedTags.sort());
   return true;
 };
 
