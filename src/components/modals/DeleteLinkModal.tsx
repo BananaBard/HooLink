@@ -1,11 +1,11 @@
 import { Button } from "../buttons/Button"
 
-interface DeleteModal {
+interface DeleteLinkModal {
     hideModal: () => void,
     handleDeleteLink: () => Promise<void>
 }
 
-const DeleteModal = ({hideModal, handleDeleteLink}: DeleteModal) => {
+const DeleteLinkModal = ({hideModal, handleDeleteLink}: DeleteLinkModal) => {
     return (
         <div className="flex flex-col gap-4">
         <div>
@@ -20,4 +20,4 @@ const DeleteModal = ({hideModal, handleDeleteLink}: DeleteModal) => {
     )
 }
 
-export default DeleteModal
+export default DeleteLinkModal
