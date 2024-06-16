@@ -5,16 +5,21 @@ import callCreateLink from "../../queries/callCreateLink";
 import { Button } from "../buttons/Button";
 import { useAuth } from "../../context/AuthContext";
 import { queryKeys } from "../../utils/queryKeys.utils";
-import { toast } from "sonner";
 import Dialog from "./Dialog";
 import { Link } from "../../types";
+import {
+  checkDescription,
+  checkEmptyURL,
+  checkLinksLimit,
+  checkValidTags,
+} from "../../utils/linkCheckers.utils";
 
 interface LinkModal {
   isCTA: boolean;
   shouldSort: boolean;
   sortMethod: string;
   isAscending: boolean;
-  userLinks?: Link[]
+  userLinks?: Link[];
 }
 
 export const CreateLinkModal: React.FC<LinkModal> = ({
@@ -22,7 +27,7 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
   shouldSort,
   sortMethod,
   isAscending,
-  userLinks
+  userLinks,
 }): JSX.Element => {
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [originalURL, setOriginalURL] = useState("");
@@ -36,36 +41,14 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
     event
   ) => {
     event.preventDefault();
-    if (originalURL === "") {
-      toast.warning("Empty or invalid URL.", {
-        duration: 5000
-      });
-      return;
-    }
-    if (description.length > 140) {
-      toast.warning("Description to long", {
-        description: 'Your description should be less than 140 characters.',
-        duration: 5000
-      });
-      return;
-    }
+    
+    if (checkEmptyURL(originalURL) === false) return;
 
-    if (checkValidTags() === false) {
-      toast.warning("To many tags", {
-        description: 'Tags should be 3 or less.',
-        duration: 5000
-      }
-      );
-      return;
-    }
+    if (checkDescription(description, 140) === false) return;
 
-    if (checkLinksLimit() === false) {
-      toast.error('Can not create link', {
-        duration: 5000,
-        description: 'You reached your links limit, delete one or more to keep using HooLink'
-      });
-      return;
-    }
+    if (checkValidTags(tags, tagsArr) === false) return;
+
+    if (checkLinksLimit(userLinks, 20) === false) return;
 
     createLink({
       originalURL,
@@ -101,25 +84,6 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
   const hideModal = () => {
     dialogRef.current?.close();
   };
-
-  const checkValidTags = (): boolean => {
-    const cleanedTags = tags.split(",").map((tag) => {
-      return tag.trim();
-    });
-    if (cleanedTags.length > 3) {
-      tagsArr = [];
-      return false;
-    }
-    tagsArr = cleanedTags.sort();
-    return true;
-  };
-
-  const checkLinksLimit = (): boolean => {
-    if (userLinks) {
-      return userLinks.length < 20
-    }
-    else return true
-  }
 
   const ctaStyle: string = `bg-purple-600 py-3 px-2 rounded-md w-[128px] font-medium
     hover:transition-all hover:scale-105

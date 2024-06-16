@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../utils/queryKeys.utils";
 import Dialog from "./modals/Dialog";
 import { useRef } from "react";
-import DeleteModal from "./modals/DeleteModal";
+import DeleteLinkModal from "./modals/DeleteLinkModal";
 
 interface Props {
   link: Link;
@@ -39,11 +39,11 @@ function LinkCard({ link }: Props) {
     }
   };
 
-  const showModal = () => {
+  const showDeleteModal = () => {
     deleteModalRef?.current!.showModal();
   };
 
-  const hideModal = () => {
+  const hideDeleteModal = () => {
     deleteModalRef.current?.close();
   };
   return (
@@ -52,8 +52,8 @@ function LinkCard({ link }: Props) {
       key={link.shortened_url}
     >
       <Dialog dialogRef={deleteModalRef}>
-        <DeleteModal
-          hideModal={hideModal}
+        <DeleteLinkModal
+          hideModal={hideDeleteModal}
           handleDeleteLink={handleDeleteLink}
         />
       </Dialog>
@@ -82,7 +82,7 @@ function LinkCard({ link }: Props) {
             <ToolIconBtn onClickFn={() => {}} />
           </Tooltip>
           <Tooltip message="Delete link!">
-            <DeleteIconBtn onClickFn={showModal} />
+            <DeleteIconBtn onClickFn={showDeleteModal} />
           </Tooltip>
         </section>
       </div>
