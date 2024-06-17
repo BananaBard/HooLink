@@ -9,7 +9,7 @@ import {
   checkEmptyURL,
   checkLinksLimit,
   checkValidTags,
-} from "../../utils/linkCheckers.utils";
+} from "../../utils/links.utils";
 import { useLinkContext } from "../../context/LinksContext";
 
 interface LinkModal {
