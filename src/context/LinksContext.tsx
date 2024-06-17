@@ -14,6 +14,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../utils/queryKeys.utils";
 import useLinks from "../hooks/useLinks";
 import callCreateLink from "../queries/callCreateLink";
+import callDeleteLink from "../queries/callDeleteLink";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 interface LinksContext {
   createLink: (
@@ -21,7 +23,7 @@ interface LinksContext {
     dialogRef: RefObject<HTMLDialogElement | null>
   ) => Promise<Link>;
   //updateLink: (id: number, linkData: CreateLink) => Promise<Link>;
-  //deleteLink: (id: number) => Promise<void>;
+  deleteLink: (userId: string, linkId: string, dialogRef: RefObject<HTMLDialogElement | null>) => Promise<PostgrestSingleResponse<null>>;
   userLinks: Link[] | undefined;
   shouldSort: boolean;
   sortMethod: string;
@@ -31,7 +33,7 @@ interface LinksContext {
   setIsAscending: Dispatch<SetStateAction<boolean>>;
   isCreatingLink: boolean;
   //isUpdatingLink: boolean;
-  //isDeletingLink: boolean;
+  isDeletingLink: boolean;
   isFetchingLinks: boolean;
 }
 
@@ -40,7 +42,7 @@ const linksContext = createContext<LinksContext>({
     throw new Error("createLink not implemented");
   },
   //updateLink: async (id: number, linkData: CreateLink) => { throw new Error("updateLink not implemented"); },
-  //deleteLink: async (id: number) => { throw new Error("deleteLink not implemented"); },
+  deleteLink: async () => { throw new Error("deleteLink not implemented"); },
   userLinks: [],
   setShouldSort: () => false,
   setSortMethod: () => "",
@@ -50,7 +52,7 @@ const linksContext = createContext<LinksContext>({
   isAscending: false,
   isCreatingLink: false,
   //isUpdatingLink: false,
-  //isDeletingLink: false,
+  isDeletingLink: false,
   isFetchingLinks: false,
 });
 
@@ -69,6 +71,15 @@ function LinksProvider({ children }: PropsWithChildren) {
     },
   });
 
+  const deleteLinkMutation = useMutation({
+    mutationFn: callDeleteLink,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.links.userLinks, shouldSort, sortMethod, isAscending],
+      });
+    },
+  })
+
   const createLink = useCallback(
     async (linkData: CreateLink, dialogRef: RefObject<HTMLDialogElement | null>) => {
       try {
@@ -83,15 +94,32 @@ function LinksProvider({ children }: PropsWithChildren) {
     [createLinkMutation]
   );
 
+
+  const deleteLink = useCallback(
+    async (userId: string, linkId: string, dialogRef: RefObject<HTMLDialogElement | null>) => {
+      try {
+        const res = await deleteLinkMutation.mutateAsync({userId, linkId})
+        dialogRef?.current?.close();
+        return res
+      } catch(error) {
+        console.error("Error deleting link:", error);
+        throw new Error("Failed to delete link");
+      }
+    },
+    [deleteLinkMutation]
+  )
+
   const { data: userLinks, isLoading: isLoadingLinks } = useLinks(
     shouldSort,
     sortMethod,
     isAscending
   );
+
   const value = useMemo(
     () => ({
       createLink,
       userLinks: userLinks,
+      deleteLink,
       setShouldSort,
       setSortMethod,
       setIsAscending,
@@ -100,6 +128,7 @@ function LinksProvider({ children }: PropsWithChildren) {
       isAscending,
       isCreatingLink: createLinkMutation.isPending,
       isFetchingLinks: isLoadingLinks,
+      isDeletingLink: deleteLinkMutation.isPending
     }),
     [createLink, setShouldSort, setSortMethod, setIsAscending, userLinks]
   );
