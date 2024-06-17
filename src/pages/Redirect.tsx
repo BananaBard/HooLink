@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/utils/Loader";
 import { useMutation } from "@tanstack/react-query";
-import redirectLinkService from "../queries/redirectLink";
 import { useEffect } from "react";
 import Pages from "../utils/pages.utils";
+import redirectLinkService from "../infra/services/redirectLink.service";
 
 export default function RedirectPage() {
   const navigate = useNavigate();
