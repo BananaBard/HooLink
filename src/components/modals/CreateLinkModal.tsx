@@ -13,6 +13,7 @@ import {
   checkLinksLimit,
   checkValidTags,
 } from "../../utils/linkCheckers.utils";
+import { useLinkContext } from "../../context/LinksContext";
 
 interface LinkModal {
   isCTA: boolean;
@@ -24,18 +25,16 @@ interface LinkModal {
 
 export const CreateLinkModal: React.FC<LinkModal> = ({
   isCTA,
-  shouldSort,
-  sortMethod,
-  isAscending,
   userLinks,
 }): JSX.Element => {
+  const {createLink, isCreatingLink} = useLinkContext()
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [originalURL, setOriginalURL] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const { user } = useAuth();
-  const queryClient = useQueryClient();
-  let tagsArr: Array<string>;
+  //const queryClient = useQueryClient();
+  let tagsArr: Array<string> = [''];
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
     event
@@ -56,10 +55,10 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
       description,
       creator: user?.id!,
       tags: tagsArr,
-    });
+    }, dialogRef);
   };
 
-  const { mutate: createLink, isPending } = useMutation({
+/*   const { mutate: createLink, isPending } = useMutation({
     mutationFn: callCreateLink,
     onSuccess: () => {
       dialogRef.current!.close();
@@ -75,7 +74,7 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
         ],
       });
     },
-  });
+  }); */
 
   const showModal = () => {
     dialogRef?.current!.showModal();
@@ -155,7 +154,7 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
               per link.
             </span>
           </fieldset>
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full" disabled={isCreatingLink}>
             Generate
           </Button>
           <button
