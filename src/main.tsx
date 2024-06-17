@@ -7,6 +7,7 @@ import "./index.css";
 import AuthProvider from "./context/AuthContext.tsx";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "sonner";
+import LinksProvider from "./context/LinksContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -15,9 +16,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <Toaster duration={2000} position="top-right" richColors={true} expand={true} />
-          <App />
-          <ReactQueryDevtools />
+          <LinksProvider>
+            <Toaster
+              duration={2000}
+              position="top-right"
+              richColors={true}
+              expand={true}
+            />
+            <App />
+            <ReactQueryDevtools />
+          </LinksProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
