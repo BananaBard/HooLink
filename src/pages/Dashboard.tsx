@@ -1,4 +1,3 @@
-import { useAuth } from "../context/AuthContext";
 import StackIcon from "../components/icons/Stack.icon";
 import Tooltip from "../components/utils/Tooltip";
 import { CreateLinkModal } from "../components/modals/CreateLinkModal";
@@ -8,24 +7,22 @@ import SortDesLetterIcon from "../components/icons/SortDesLetter";
 import SortRecentIcon from "../components/icons/SortRecentIcon";
 import SortOlderIcon from "../components/icons/SortOlderIcon";
 import useTitle from "../hooks/useTitle";
-import { useState } from "react";
-import useLinks from "../hooks/useLinks";
 import Loader from "../components/utils/Loader";
 import LinkTable from "../components/LinkTable";
 import RefreshIcon from "../components/icons/RefreshIcon";
+import { useLinkContext } from "../context/LinksContext";
 
 function Dashboard() {
-  const { user } = useAuth();
-  const [shouldSort, setShouldSort] = useState(false);
-  const [sortMethod, setSortMethod] = useState("");
-  const [isAscending, setIsAscending] = useState(false);
-
-  const { data: userLinks, isLoading } = useLinks(
-    user?.id!,
+  const {
+    userLinks,
+    isFetchingLinks,
     shouldSort,
     sortMethod,
-    isAscending
-  );
+    isAscending,
+    setShouldSort,
+    setSortMethod,
+    setIsAscending,
+  } = useLinkContext();
 
   useTitle("Dashboard - HooLink");
 
@@ -87,7 +84,7 @@ function Dashboard() {
           />
         </div>
       </section>
-      {isLoading ? <Loader /> : <LinkTable userLinks={userLinks!} />}
+      {isFetchingLinks ? <Loader /> : <LinkTable userLinks={userLinks!} />}
     </div>
   );
 }
