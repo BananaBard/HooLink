@@ -1,10 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import callCreateLink from "../../queries/callCreateLink";
 import { Button } from "../buttons/Button";
 import { useAuth } from "../../context/AuthContext";
-import { queryKeys } from "../../utils/queryKeys.utils";
 import Dialog from "./Dialog";
 import { Link } from "../../types";
 import {
@@ -27,20 +24,19 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
   isCTA,
   userLinks,
 }): JSX.Element => {
-  const {createLink, isCreatingLink} = useLinkContext()
+  const { createLink, isCreatingLink } = useLinkContext();
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [originalURL, setOriginalURL] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const { user } = useAuth();
-  //const queryClient = useQueryClient();
-  let tagsArr: Array<string> = [''];
+  let tagsArr: Array<string> = [""];
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
     event
   ) => {
     event.preventDefault();
-    
+
     if (checkEmptyURL(originalURL) === false) return;
 
     if (checkDescription(description, 140) === false) return;
@@ -49,33 +45,17 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
 
     if (checkLinksLimit(userLinks, 20) === false) return;
 
-    createLink({
-      originalURL,
-      expTimeInMinutes: 1440,
-      description,
-      creator: user?.id!,
-      tags: tagsArr,
-    }, dialogRef);
+    createLink(
+      {
+        originalURL,
+        expTimeInMinutes: 1440,
+        description,
+        creator: user?.id!,
+        tags: tagsArr,
+      },
+      dialogRef
+    );
   };
-
-/*   const { mutate: createLink, isPending } = useMutation({
-    mutationFn: callCreateLink,
-    onSuccess: () => {
-      dialogRef.current!.close();
-      setOriginalURL("");
-      setDescription("");
-      setTags("");
-      queryClient.invalidateQueries({
-        queryKey: [
-          queryKeys.links.userLinks,
-          shouldSort,
-          sortMethod,
-          isAscending,
-        ],
-      });
-    },
-  }); */
-
   const showModal = () => {
     dialogRef?.current!.showModal();
   };
