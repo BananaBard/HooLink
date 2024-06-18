@@ -1,63 +1,21 @@
 import { Link } from "../types";
-import ToolIconBtn from "./buttons/iconButtons/ToolIconBtn";
 import ClickCountIcon from "./icons/ClickCountIcon";
-import DeleteIconBtn from "./buttons/iconButtons/DeleteIconBtn";
 import CopyIconBtn from "./buttons/iconButtons/CopyIconBtn";
 import Tooltip from "./utils/Tooltip";
-import { toast } from "sonner";
-import deleteLinkService from "../infra/services/deleteLink.service";
-import { useAuth } from "../context/AuthContext";
-import { useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "../utils/queryKeys.utils";
-import Dialog from "./modals/Dialog";
-import { useRef } from "react";
 import DeleteLinkModal from "./modals/DeleteLinkModal";
+import { handleCopyLink } from "../utils/links.utils";
+import UpdateLinkModal from "./modals/UpdateLinkModal";
 
 interface Props {
   link: Link;
 }
 
 function LinkCard({ link }: Props) {
-  const deleteModalRef = useRef<HTMLDialogElement | null>(null);
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(link.shortened_url!);
-    toast.success("Copied!");
-  };
-
-  const handleDeleteLink = async () => {
-    const res = await deleteLinkService({ userId: user?.id!, linkId: link.id });
-    if (res) {
-      toast.success("Deleted", {
-        description: 'You will be able to see this link until you refresh the page',
-        duration: 5000
-      });
-      deleteModalRef?.current!.close();
-      queryClient.invalidateQueries({ queryKey: queryKeys.links.userLinks });
-    }
-  };
-
-  const showDeleteModal = () => {
-    deleteModalRef?.current!.showModal();
-  };
-
-  const hideDeleteModal = () => {
-    deleteModalRef.current?.close();
-  };
   return (
     <li
       className="flex flex-col bg-neutral-800 rounded-md border border-neutral-400 py-4 px-8 gap-2"
       key={link.shortened_url}
     >
-      <Dialog dialogRef={deleteModalRef}>
-        <DeleteLinkModal
-          hideModal={hideDeleteModal}
-          handleDeleteLink={handleDeleteLink}
-        />
-      </Dialog>
-
       <div className="flex flex-col sm:flex-row justify-between md:items-center">
         <a
           href={link.shortened_url}
@@ -76,14 +34,12 @@ function LinkCard({ link }: Props) {
             </div>
           </Tooltip>
           <Tooltip message="Copy shortened link!">
-            <CopyIconBtn onClickFn={handleCopyLink} />
+            <CopyIconBtn
+              onClickFn={() => handleCopyLink(link.shortened_url!)}
+            />
           </Tooltip>
-          <Tooltip message="Edit link settings">
-            <ToolIconBtn onClickFn={() => {}} />
-          </Tooltip>
-          <Tooltip message="Delete link!">
-            <DeleteIconBtn onClickFn={showDeleteModal} />
-          </Tooltip>
+          <UpdateLinkModal linkId={link.id}/>
+          <DeleteLinkModal linkId={link.id} />
         </section>
       </div>
       <a

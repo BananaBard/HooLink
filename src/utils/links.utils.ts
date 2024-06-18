@@ -53,4 +53,9 @@ const checkEmptyURL = (URL: string): boolean => {
   }
 }
 
-export { checkDescription, checkValidTags, checkLinksLimit, checkEmptyURL };
+const handleCopyLink = (text: string) => {
+  navigator.clipboard.writeText(text);
+  toast.success("Copied!");
+};
+
+export { checkDescription, checkValidTags, checkLinksLimit, checkEmptyURL,handleCopyLink };

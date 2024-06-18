@@ -1,4 +1,4 @@
-import { supabase } from "../infra/supabase";
+import { supabase } from "../supabase";
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
