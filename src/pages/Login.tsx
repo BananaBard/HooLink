@@ -7,7 +7,7 @@ import Pages from "../utils/pages.utils";
 import useTitle from "../hooks/useTitle";
 
 export default function Login() {
-  const { signInWithGithub, user } = useAuth();
+  const { signInWithGithub, signInWithGoogle, user } = useAuth();
   useTitle('Login - HooLink')
 
   const handleGithubLogin = async () => {
@@ -26,7 +26,7 @@ export default function Login() {
             <strong>HooLink</strong>{" "}
           </h2>
           <GithubLoginBtn onClick={handleGithubLogin} />
-          <GoogleLoginBtn />
+          <GoogleLoginBtn onClick={signInWithGoogle}/>
         </form>
       </section>
     </main>

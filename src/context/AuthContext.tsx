@@ -46,7 +46,7 @@ function AuthProvider({ children }: PropsWithChildren) {
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
+      provider: "google",
     });
     if (error) {
       throw new Error('Error login')
