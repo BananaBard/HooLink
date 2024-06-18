@@ -22,7 +22,7 @@ export default function Header() {
               onClick={signOut}
               className="py-2 px-6 rounded-lg border-2 border-neutral-500"
             >
-              Sign out
+              Log out
             </button>
           ) : (
             <Link
