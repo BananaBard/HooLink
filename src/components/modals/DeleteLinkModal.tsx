@@ -4,6 +4,7 @@ import DeleteIconBtn from "../buttons/iconButtons/DeleteIconBtn";
 import Dialog from "./Dialog";
 import { useAuth } from "../../context/AuthContext";
 import { useLinkContext } from "../../context/LinksContext";
+import Tooltip from "../utils/Tooltip";
 
 interface Props {
     linkId: string
@@ -24,7 +25,9 @@ function DeleteLinkModal({linkId}: Props) {
 
   return (
     <div>
-      <DeleteIconBtn onClickFn={showDeleteModal} />
+      <Tooltip message="Delete link">
+        <DeleteIconBtn onClickFn={showDeleteModal} />
+      </Tooltip>
       <Dialog dialogRef={deleteModalRef}>
         <div className="flex flex-col gap-4">
           <div>
