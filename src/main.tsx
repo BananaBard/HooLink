@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <AuthProvider>
           <LinksProvider>
             <Toaster
-              duration={2000}
+              duration={5000}
               position="top-right"
               richColors={true}
               expand={true}
