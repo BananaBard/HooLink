@@ -1,5 +1,4 @@
 import StackIcon from "../components/icons/Stack.icon";
-import Tooltip from "../components/utils/Tooltip";
 import { CreateLinkModal } from "../components/modals/CreateLinkModal";
 import IconButton from "../components/buttons/iconButtons/IconButton";
 import SortAscLettersIcon from "../components/icons/SortAscLetter";
@@ -68,9 +67,7 @@ function Dashboard() {
         </div>
         <div className="flex gap-2 justify-between">
           <div className="flex gap-2 items-center bg-neutral-800 border border-neutral-400 w-fit p-2 rounded-lg">
-            <Tooltip message="Your stored links, max of 20.">
               <StackIcon />
-            </Tooltip>
             <p className="text-md">
               {userLinks && `${userLinks.length || "0"} / 20`}
             </p>
