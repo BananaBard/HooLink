@@ -16,14 +16,25 @@ import useLinks from "../hooks/useLinks";
 import callCreateLink from "../queries/callCreateLink";
 import callDeleteLink from "../queries/callDeleteLink";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import callUpdateLink from "../queries/callUpdateLink";
 
 interface LinksContext {
   createLink: (
     linkData: CreateLink,
     dialogRef: RefObject<HTMLDialogElement | null>
   ) => Promise<Link>;
-  //updateLink: (id: number, linkData: CreateLink) => Promise<Link>;
-  deleteLink: (userId: string, linkId: string, dialogRef: RefObject<HTMLDialogElement | null>) => Promise<PostgrestSingleResponse<null>>;
+  updateLink: (
+    creator: string,
+    id: string,
+    descritpion: string,
+    tags: string[],
+    dialogRef: RefObject<HTMLDialogElement | null>
+  ) => Promise<PostgrestSingleResponse<null>>;
+  deleteLink: (
+    userId: string,
+    linkId: string,
+    dialogRef: RefObject<HTMLDialogElement | null>
+  ) => Promise<PostgrestSingleResponse<null>>;
   userLinks: Link[] | undefined;
   shouldSort: boolean;
   sortMethod: string;
@@ -32,7 +43,7 @@ interface LinksContext {
   setSortMethod: Dispatch<SetStateAction<string>>;
   setIsAscending: Dispatch<SetStateAction<boolean>>;
   isCreatingLink: boolean;
-  //isUpdatingLink: boolean;
+  isUpdatingLink: boolean;
   isDeletingLink: boolean;
   isFetchingLinks: boolean;
 }
@@ -41,8 +52,12 @@ const linksContext = createContext<LinksContext>({
   createLink: async () => {
     throw new Error("createLink not implemented");
   },
-  //updateLink: async (id: number, linkData: CreateLink) => { throw new Error("updateLink not implemented"); },
-  deleteLink: async () => { throw new Error("deleteLink not implemented"); },
+  updateLink: async () => {
+    throw new Error("updateLink not implemented");
+  },
+  deleteLink: async () => {
+    throw new Error("deleteLink not implemented");
+  },
   userLinks: [],
   setShouldSort: () => false,
   setSortMethod: () => "",
@@ -51,7 +66,7 @@ const linksContext = createContext<LinksContext>({
   sortMethod: "createdAt",
   isAscending: false,
   isCreatingLink: false,
-  //isUpdatingLink: false,
+  isUpdatingLink: false,
   isDeletingLink: false,
   isFetchingLinks: false,
 });
@@ -66,7 +81,12 @@ function LinksProvider({ children }: PropsWithChildren) {
     mutationFn: callCreateLink,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [queryKeys.links.userLinks, shouldSort, sortMethod, isAscending],
+        queryKey: [
+          queryKeys.links.userLinks,
+          shouldSort,
+          sortMethod,
+          isAscending,
+        ],
       });
     },
   });
@@ -75,13 +95,35 @@ function LinksProvider({ children }: PropsWithChildren) {
     mutationFn: callDeleteLink,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [queryKeys.links.userLinks, shouldSort, sortMethod, isAscending],
+        queryKey: [
+          queryKeys.links.userLinks,
+          shouldSort,
+          sortMethod,
+          isAscending,
+        ],
       });
     },
-  })
+  });
+
+  const updateLinkMutation = useMutation({
+    mutationFn: callUpdateLink,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          queryKeys.links.userLinks,
+          shouldSort,
+          sortMethod,
+          isAscending,
+        ],
+      });
+    },
+  });
 
   const createLink = useCallback(
-    async (linkData: CreateLink, dialogRef: RefObject<HTMLDialogElement | null>) => {
+    async (
+      linkData: CreateLink,
+      dialogRef: RefObject<HTMLDialogElement | null>
+    ) => {
       try {
         const newLink = await createLinkMutation.mutateAsync(linkData);
         dialogRef?.current?.close();
@@ -94,20 +136,48 @@ function LinksProvider({ children }: PropsWithChildren) {
     [createLinkMutation]
   );
 
-
   const deleteLink = useCallback(
-    async (userId: string, linkId: string, dialogRef: RefObject<HTMLDialogElement | null>) => {
+    async (
+      userId: string,
+      linkId: string,
+      dialogRef: RefObject<HTMLDialogElement | null>
+    ) => {
       try {
-        const res = await deleteLinkMutation.mutateAsync({userId, linkId})
+        const res = await deleteLinkMutation.mutateAsync({ userId, linkId });
         dialogRef?.current?.close();
-        return res
-      } catch(error) {
+        return res;
+      } catch (error) {
         console.error("Error deleting link:", error);
         throw new Error("Failed to delete link");
       }
     },
     [deleteLinkMutation]
-  )
+  );
+
+  const updateLink = useCallback(
+    async (
+      creator: string,
+      id: string,
+      description: string,
+      tags: string[],
+      dialogRef: RefObject<HTMLDialogElement | null>
+    ) => {
+      try {
+        const res = await updateLinkMutation.mutateAsync({
+          creator,
+          id,
+          description,
+          tags,
+        });
+        dialogRef?.current?.close();
+        return res;
+      } catch (error) {
+        console.error("Error updating link:", error);
+        throw new Error("Failed to update link");
+      }
+    },
+    [updateLinkMutation]
+  );
 
   const { data: userLinks, isLoading: isLoadingLinks } = useLinks(
     shouldSort,
@@ -120,6 +190,7 @@ function LinksProvider({ children }: PropsWithChildren) {
       createLink,
       userLinks: userLinks,
       deleteLink,
+      updateLink,
       setShouldSort,
       setSortMethod,
       setIsAscending,
@@ -128,7 +199,8 @@ function LinksProvider({ children }: PropsWithChildren) {
       isAscending,
       isCreatingLink: createLinkMutation.isPending,
       isFetchingLinks: isLoadingLinks,
-      isDeletingLink: deleteLinkMutation.isPending
+      isDeletingLink: deleteLinkMutation.isPending,
+      isUpdatingLink: updateLinkMutation.isPending,
     }),
     [createLink, setShouldSort, setSortMethod, setIsAscending, userLinks]
   );

@@ -1,10 +1,10 @@
 import { Link } from "../types";
-import ToolIconBtn from "./buttons/iconButtons/ToolIconBtn";
 import ClickCountIcon from "./icons/ClickCountIcon";
 import CopyIconBtn from "./buttons/iconButtons/CopyIconBtn";
 import Tooltip from "./utils/Tooltip";
 import DeleteLinkModal from "./modals/DeleteLinkModal";
 import { handleCopyLink } from "../utils/links.utils";
+import UpdateLinkModal from "./modals/UpdateLinkModal";
 
 interface Props {
   link: Link;
@@ -38,9 +38,7 @@ function LinkCard({ link }: Props) {
               onClickFn={() => handleCopyLink(link.shortened_url!)}
             />
           </Tooltip>
-          <Tooltip message="Edit link settings">
-            <ToolIconBtn onClickFn={() => {}} />
-          </Tooltip>
+          <UpdateLinkModal linkId={link.id}/>
           <DeleteLinkModal linkId={link.id} />
         </section>
       </div>
