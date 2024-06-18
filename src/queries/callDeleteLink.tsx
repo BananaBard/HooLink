@@ -15,13 +15,11 @@ const callDeleteLink = async ({
     const res = await deleteLinkService({ userId, linkId });
     toast.success("Deleted", {
       description: "The link was deleted, this action can not be undone.",
-      duration: 5000,
     });
     return res;
   } catch (error) {
     toast.error("Could not delete link", {
       description: "Something went wrong",
-      duration: 5000,
     });
     throw new Error("Could not delete link, something went wrong");
   }
