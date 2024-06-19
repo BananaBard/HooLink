@@ -1,7 +1,6 @@
 import { Link } from "../types";
 import ClickCountIcon from "./icons/ClickCountIcon";
 import CopyIconBtn from "./buttons/iconButtons/CopyIconBtn";
-import Tooltip from "./utils/Tooltip";
 import DeleteLinkModal from "./modals/DeleteLinkModal";
 import { handleCopyLink } from "../utils/links.utils";
 import UpdateLinkModal from "./modals/UpdateLinkModal";
@@ -27,17 +26,13 @@ function LinkCard({ link }: Props) {
         </a>
 
         <section className="flex gap-2 mt-2 sm:mt-0">
-          <Tooltip message="Click count">
             <div className="flex gap-2 items-center mr-2">
               <ClickCountIcon />
               <p>{link.clicked}</p>
             </div>
-          </Tooltip>
-          <Tooltip message="Copy shortened link!">
             <CopyIconBtn
               onClickFn={() => handleCopyLink(link.shortened_url!)}
             />
-          </Tooltip>
           <UpdateLinkModal linkId={link.id}/>
           <DeleteLinkModal linkId={link.id} />
         </section>
