@@ -6,7 +6,7 @@ import useTitle from "../hooks/useTitle";
 function LandingPage() {
   const {user} = useAuth();
   const navigate = useNavigate();
-  useTitle('HooLink')
+  useTitle('HooLink - URL Shortener')
   const handleTryItBtn = () => {
     navigate("/login");
   };
