@@ -17,11 +17,7 @@ function LandingPage() {
 
   return (
     <div
-      className="w-full 
-    text-white flex-grow
-    bg-neutral-900
-    px-4
-    "
+      className="text-white flex-grow bg-neutral-900 px-4"
     >
       <section className="max-w-7xl mx-auto flex flex-col md:items-center py-20 lg:py-44 gap-4 md:gap-8">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-left md:text-center">
