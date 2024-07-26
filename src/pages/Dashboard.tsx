@@ -38,18 +38,18 @@ function Dashboard() {
   return (
     <div className="flex flex-col flex-grow p-4 md:px-14 md:py-12 gap-8 bg-neutral-900 text-neutral-200">
       <section className="flex flex-col lg:flex-row lg:items-center mx-auto justify-between gap-4 max-w-7xl w-full">
-        <div className="flex gap-2 flex-col md:flex-row">
+        <div className="grid grid-cols-2 lg:flex gap-2">
           <IconButton
             onClick={() => handleSort("tags", false)}
             icon={<SortAscLettersIcon />}
           >
-            Letter Ascending
+            Ascending
           </IconButton>
           <IconButton
             onClick={() => handleSort("tags", true)}
             icon={<SortDesLetterIcon />}
           >
-            Letter Descending
+            Descending
           </IconButton>
           <IconButton
             onClick={() => handleSort("createdAt", false)}
