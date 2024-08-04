@@ -48,7 +48,7 @@ export const CreateLinkModal: React.FC<LinkModal> = ({
     createLink(
       {
         originalURL,
-        expTimeInMinutes: 43800,
+        expTimeInMinutes: 2880,
         description,
         creator: user?.id!,
         tags: tagsArr,
