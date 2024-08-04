@@ -1,30 +1,110 @@
-# React + TypeScript + Vite
+# HooLink
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HooLink is a user-friendly URL shortening service that allows authenticated users to create short links for easier sharing and tracking. This project showcases a clean, modern landing page and offers secure user authentication with OAuth providers like Google.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Authentication:** Secure login using Google OAuth.
+- **URL Shortening:** Generate short links for long URLs.
+- **Expiration:** Short links automatically expire after a set period.
+- **Clipboard Copying:** Easily copy short links to the clipboard.
+- **Responsive Design:** Optimized for both desktop and mobile devices.
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend:**
+  - React
+  - Tailwind CSS
+  - Vite
 
-- Configure the top-level `parserOptions` property like this:
+- **Backend:**
+  - Supabase (for authentication and database)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- **Deployment:**
+  - Vercel
+
+## Setup and Installation
+
+### Prerequisites
+
+- Node.js (>=14.x)
+- npm or yarn
+- Supabase project
+You will need two tables, those are the sql codes for each one:
+Links:
+```sql
+create table
+  public.links (
+    id uuid not null default gen_random_uuid (),
+    original_url text not null default ''::text,
+    shortened_url text not null,
+    "createdAt" timestamp with time zone not null default now(),
+    "expiresAt" timestamp with time zone not null,
+    clicked numeric not null default '0'::numeric,
+    creator text null,
+    description text null,
+    tags text[] null,
+    constraint links_pkey primary key (id),
+    constraint links_shortened_url_key unique (shortened_url),
+    constraint links_description_check check ((length(description) < 140))
+  ) tablespace pg_default;
+```
+Users:
+```sql
+create table
+  public.users (
+    id uuid not null default gen_random_uuid (),
+    email text not null,
+    constraint users_pkey primary key (id)
+  ) tablespace pg_default;
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/BananaBard/hoolink.git
+   cd hoolink
+2. **Install dependencies:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+3. **Create a .env file in the root directory and add your Supabase and Vercel configuration:**
+   ```bash
+   VITE_BASE_URL= Base URL from your deploy, will be used to create the shortened links
+   VITE_SUPABASE_KEY= Provided by Supabase
+   VITE_SUPABASE_URL= Provided by Supabase
+4. **Run the application:**
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+
+    
+### Deployment
+
+This project is deployed on Vercel. To deploy your own version:
+
+1. **Push your code to a GitHub repository.**
+2. **Go to [Vercel](https://vercel.com/) and create a new project, importing your GitHub repository.**
+3. **Set up the environment variables in Vercel:**
+   - `VITE_BASE_URL`
+   - `VITE_SUPABASE_KEY`
+   - `VITE_SUPABASE_URL`
+4. **Deploy the project.**
+
+
+### Usage
+
+1. **Sign Up / Sign In:**
+   - Use Google OAuth to sign up or sign in.
+
+2. **Create Short Links:**
+   - Enter the original URL.
+   - Generate the short link.
+
+3. **Manage Links:**
+   - View all your shortened links.
+   - Copy links to the clipboard.
+   - Delete links
